@@ -3,11 +3,10 @@ use convert_case::Case;
 use convert_case::Casing;
 use proc_macro2::TokenStream;
 use quote::{format_ident, quote};
-use syn::parse_quote::ParseQuote;
 use syn::punctuated::Punctuated;
 use syn::token::Comma;
 use syn::Pat::Ident;
-use syn::{Block, FnArg, PatIdent, PatType, ReturnType};
+use syn::{FnArg, PatIdent, PatType, ReturnType};
 
 pub(crate) fn generate_initializer(hook_function: HookFunction) -> TokenStream {
     let func_ident = &hook_function.item.sig.ident;
@@ -63,17 +62,15 @@ pub(crate) fn generate_initializer(hook_function: HookFunction) -> TokenStream {
 
     let create_interface = quote! {
          let create_interface = unsafe {
-                    GetProcAddress(
-                        GetModuleHandleA(format!("{}\0", #module).as_ptr() as winapi::um::winnt::LPCSTR),
-                        "CreateInterface\0".as_ptr() as winapi::um::winnt::LPCSTR,
-                    )
-                };
+            GetProcAddress(
+                GetModuleHandleA(format!("{}\0", #module).as_ptr() as winapi::um::winnt::LPCSTR),
+                "CreateInterface\0".as_ptr() as winapi::um::winnt::LPCSTR,
+            )
+        };
 
-                let create_interface = unsafe {
-                    std::mem::transmute::<_, fn(name: *const c_char, return_code: *const c_int) -> *const c_void>(
-                        create_interface,
-                    )
-                };
+        let create_interface = unsafe {
+            std::mem::transmute::<_, fn(name: *const c_char, return_code: *const c_int) -> *const c_void>(create_interface)
+        };
     };
 
     let init_hook = quote! {

@@ -1,12 +1,9 @@
 extern crate proc_macro;
 
 use darling::FromMeta;
-use proc_macro::Ident;
-use proc_macro2::TokenStream;
-use proc_macro_error::{abort, emit_error};
+use proc_macro_error::abort;
 use quote::{format_ident, quote};
 use syn::parse::{Parse, ParseStream};
-use syn::spanned::Spanned;
 use syn::{parse_macro_input, AttributeArgs, ItemFn, Token};
 
 mod generator;
@@ -35,7 +32,7 @@ pub fn function_hook(
 
     let args = match MacroArgs::from_list(&args) {
         Ok(v) => v,
-        Err(e) => {
+        Err(_e) => {
             abort!(
                 "Failed to parse arguments of proc macro invocation",
                 fun.sig.ident

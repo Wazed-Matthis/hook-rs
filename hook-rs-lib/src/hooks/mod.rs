@@ -1,5 +1,3 @@
-use std::sync::RwLock;
-
 pub mod vtable;
 
 pub trait Hook: Sync + Send {

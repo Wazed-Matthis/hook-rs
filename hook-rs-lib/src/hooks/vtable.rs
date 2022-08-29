@@ -40,7 +40,6 @@ impl VMT {
     ///         pointer in the vtable
     pub fn hook(&mut self, index: isize, new_fn: usize) {
         self.new_vtable[index as usize] = new_fn;
-
         unsafe {
             let class = self.base_address as *mut *mut usize;
 

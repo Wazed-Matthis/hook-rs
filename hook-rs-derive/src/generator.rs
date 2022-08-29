@@ -9,7 +9,7 @@ use syn::Pat::Ident;
 use syn::{FnArg, PatIdent, PatType, ReturnType};
 
 pub(crate) fn generate_initializer(hook_function: HookFunction) -> TokenStream {
-    let func_ident = &hook_function.item.sig.ident;
+    let func_ident = &hook_function.item.sig.ident.clone();
     let module = &hook_function.args.module;
     // name of init function
     let init_ident = format_ident!("init_{}", func_ident);
@@ -102,7 +102,7 @@ pub(crate) fn generate_initializer(hook_function: HookFunction) -> TokenStream {
             unsafe{
                 #init_hook
 
-                dbg!(interface);
+                log::debug!("Initializing hook {}, captured interface {} at {:?}", stringify!(#func_ident), #interface_name, interface);
 
                 hook.hook(#vtable_index, #new_function_name as usize);
                 let original = hook.get_original(#vtable_index);

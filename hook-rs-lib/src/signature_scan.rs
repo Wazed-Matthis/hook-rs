@@ -1,6 +1,8 @@
+use std::ffi::c_char;
+
 #[derive(Clone, Debug, PartialEq)]
 pub struct Signature {
-    sig: Vec<SignatureComponent>,
+    pub sig: Vec<SignatureComponent>,
 }
 
 #[derive(Clone, Debug, PartialEq)]
@@ -38,19 +40,3 @@ fn test_signature() {
         }
     )
 }
-
-// pub fn scan_for_signature(signature: &Signature, haystack: &[u8]) -> Result<i64, String> {
-//     for i in haystack {
-//         for (sig_index, pat) in signature.sig.iter().enumerate() {
-//             let a = haystack[i + sig_index];
-//             match pat {
-//                 SignatureComponent::Value(v) => {
-//                     if a != v {
-//                         break;
-//                     }
-//                 }
-//                 SignatureComponent::Mask => {}
-//             }
-//         }
-//     }
-// }
